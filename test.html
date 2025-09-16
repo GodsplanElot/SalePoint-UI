@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction-Aware Hover in JS</title>
+    <style>
+        /* --- Basic Setup & Typography --- */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #111827; /* dark background */
+            font-family: sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+        /* --- Main Component Styles (Translated from Tailwind CSS) --- */
+        .direction-aware-hover {
+            position: relative;
+            width: 24rem;  /* 384px */
+            height: 24rem; /* 384px */
+            background-color: transparent;
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        /* The image container for scaling and movement */
+        .direction-aware-hover .image-container {
+            position: absolute;
+            inset: 0;
+            height: 100%;
+            width: 100%;
+            transition: transform 0.2s ease-out;
+        }
+        
+        .direction-aware-hover img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            /* Scale image up slightly to prevent seeing edges on translate */
+            transform: scale(1.15); 
+        }
+
+        /* The dark overlay that appears on hover */
+        .direction-aware-hover .overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 10;
+        }
+
+        /* The text content */
+        .direction-aware-hover .content {
+            position: absolute;
+            bottom: 1rem; /* bottom-4 */
+            left: 1rem;   /* left-4 */
+            z-index: 20;
+            color: white;
+            text-align: left;
+            opacity: 0;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .direction-aware-hover .content-title {
+            font-weight: bold;
+            font-size: 1.25rem; /* text-xl */
+        }
+        .direction-aware-hover .content-text {
+            font-size: 0.875rem; /* text-sm */
+        }
+
+        /* --- Hover State Logic --- */
+        .direction-aware-hover:hover .overlay {
+            opacity: 1;
+        }
+
+        .direction-aware-hover:hover .content {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+        /* --- Directional Animation States --- */
+        
+        /* Coming from TOP */
+        .direction-aware-hover.hover-from-top .content { transform: translateY(-20px); }
+        .direction-aware-hover.hover-from-top:hover .image-container { transform: translateY(20px); }
+
+        /* Coming from BOTTOM */
+        .direction-aware-hover.hover-from-bottom .content { transform: translateY(20px); }
+        .direction-aware-hover.hover-from-bottom:hover .image-container { transform: translateY(-20px); }
+
+        /* Coming from LEFT */
+        .direction-aware-hover.hover-from-left .content { transform: translateX(-20px); }
+        .direction-aware-hover.hover-from-left:hover .image-container { transform: translateX(20px); }
+
+        /* Coming from RIGHT */
+        .direction-aware-hover.hover-from-right .content { transform: translateX(20px); }
+        .direction-aware-hover.hover-from-right:hover .image-container { transform: translateX(-20px); }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1>Direction-Aware Hover</h1>
+        <p>Recreated with HTML, CSS, and JS</p>
+        <div class="direction-aware-hover" style="margin-top: 2rem;">
+            <div class="image-container">
+                <img src="https://images.unsplash.com/photo-1663765970236-f2acfde22237?q=80&w=3542&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Abstract image of mountains and clouds"/>
+            </div>
+            <div class="overlay"></div>
+            <div class="content">
+                <p class="content-title">In the mountains</p>
+                <p class="content-text">$1299 / night</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hoverContainers = document.querySelectorAll('.direction-aware-hover');
+
+            // The core logic to determine the direction of entry.
+            const getDirection = (event, element) => {
+                const { width: w, height: h, left, top } = element.getBoundingClientRect();
+                const x = event.clientX - left - w / 2 * (w > h ? h / w : 1);
+                const y = event.clientY - top - h / 2 * (h > w ? w / h : 1);
+                const d = Math.round(Math.atan2(y, x) / 1.57079633 + 5) % 4;
+                return d;
+            };
+
+            hoverContainers.forEach(container => {
+                container.addEventListener('mouseenter', (event) => {
+                    const direction = getDirection(event, container);
+                    const directionClasses = ['hover-from-top', 'hover-from-right', 'hover-from-bottom', 'hover-from-left'];
+                    
+                    // Remove any existing direction classes
+                    container.className = 'direction-aware-hover';
+                    
+                    // Add the new direction class
+                    container.classList.add(directionClasses[direction]);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

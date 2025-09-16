@@ -1,156 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apple Clone</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AppleStore - Kentucky</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"/>
 
   <style>
-    /* Apple-like Navbar */
-    .apple-navbar {
-      background: rgba(0, 0, 0, 0.9);
-      height: 44px;
-      padding: 0;
+    :root{ --nav-height:44px; }
+    body{ font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#ededed; }
+
+    /* Navbar shell */
+    .apple-navbar{
+      background: rgba(0,0,0,.92);
+      height:var(--nav-height);
+      padding:0 0.5rem;
+      z-index:1100;
     }
 
-    .apple-navbar .navbar-nav .nav-link {
-      color: #fff;
-      font-size: 0.9rem;
-      padding: 0 0.6rem;
+    .apple-navbar .navbar-brand{ color:#fff; display:flex; align-items:center; padding:0; margin-right:.5rem; }
+    .apple-navbar .navbar-brand i{ font-size:1.3rem; }
+
+    .apple-navbar .navbar-nav .nav-link{ color:#fff; font-size:.92rem; padding:0 .6rem; }
+    .apple-navbar .navbar-nav .nav-link:hover{ color:#cfcfd1; }
+
+    .apple-icons i{ font-size:1.1rem; margin-left:1rem; color:#fff; cursor:pointer; }
+
+    /* custom toggler */
+    .custom-toggler{
+      border:none; background:transparent; padding:.25rem; width:28px; height:22px; position:relative;
+      display:inline-flex; align-items:center; justify-content:center;
+    }
+    .custom-toggler span{
+      display:block; width:100%; height:2px; background:#fff; border-radius:2px; position:absolute; left:0; transition: transform .25s ease, top .25s ease, bottom .25s ease, opacity .25s ease;
+    }
+    .custom-toggler span:nth-child(1){ top:4px; }
+    .custom-toggler span:nth-child(2){ bottom:4px; }
+
+    /* when offcanvas open show X */
+    .custom-toggler.open span:nth-child(1){ transform: rotate(45deg); top:9px; }
+    .custom-toggler.open span:nth-child(2){ transform: rotate(-45deg); bottom:9px; }
+
+    /* mega-dropdown for desktop */
+    .mega-dropdown{
+      position:absolute; left:0; top:100%; width:100%; background:#1d1d1f; color:#fff; padding:1.25rem 2rem; z-index:1050;
+      opacity:0; visibility:hidden; transform:translateY(8px); transition:opacity .18s ease, transform .18s ease, visibility 0s linear .18s; pointer-events:none;
     }
 
-    .apple-navbar .navbar-nav .nav-link:hover {
-      color: #ccc;
+    /* show helper class (controlled by JS on desktop hover) */
+    .mega-dropdown.show-mega{ opacity:1; visibility:visible; transform:translateY(0); pointer-events:auto; }
+
+    .mega-dropdown h6{ font-size:.75rem; color:#9a9aa0; margin-bottom:.6rem; text-transform:uppercase; }
+    .mega-dropdown a{ display:block; color:#fff; font-size:.95rem; text-decoration:none; margin-bottom:.35rem; }
+    .mega-dropdown a:hover{ color:#2997ff; }
+
+    /* desktop only pointer capture: keep dropdown from covering nav links area */
+    @media (min-width:992px){
+      .nav-item.position-static{ position:relative; }
     }
 
-    .apple-navbar .navbar-brand {
-      padding: 0;
-      margin: 0 0.5rem 0 0; /* keep logo close to items */
+    /* mobile / offcanvas styling */
+    @media (max-width:991.98px){
+      .navbar-collapse{ display:none !important; }
+      .offcanvas-body .nav-link{ padding:.55rem 0; border-bottom:1px solid rgba(255,255,255,.06); }
+      .offcanvas-body .nav-link:last-child{ border-bottom:0; }
+      .offcanvas{ background:#1d1d1f; color:#fff; }
     }
 
-    .apple-navbar .navbar-brand i {
-      font-size: 1.3rem;
-    }
+    /* small polish */
+    .offcanvas-header{ border-bottom:1px solid rgba(255,255,255,.06); }
+    .offcanvas .bi{ font-size:1.05rem; }
 
-    .apple-icons i {
-      font-size: 1.1rem;
-      margin-left: 1rem;
-      color: #fff;
-      cursor: pointer;
-    }
+    /* --- Main Component Styles (Translated from Tailwind CSS) --- */
+        .direction-aware-hover {
+            position: relative;
+            width: 24rem;  /* 384px */
+            height: 24rem; /* 384px */
+            background-color: transparent;
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        /* The image container for scaling and movement */
+        .direction-aware-hover .image-container {
+            position: absolute;
+            inset: 0;
+            height: 100%;
+            width: 100%;
+            transition: transform 0.2s ease-out;
+        }
+        
+        .direction-aware-hover img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            /* Scale image up slightly to prevent seeing edges on translate */
+            transform: scale(1.15); 
+        }
 
-    /* Custom Sleek Toggler (two lines) */
-    .navbar-toggler {
-      border: none !important;
-      box-shadow: none !important;
-      padding: 0.25rem;
-      position: relative;
-      width: 22px;
-      height: 18px;
-    }
+        /* The dark overlay that appears on hover */
+        .direction-aware-hover .overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 10;
+        }
 
-    .navbar-toggler span {
-      display: block;
-      width: 100%;
-      height: 2px;
-      background: #fff;
-      border-radius: 1px;
-      position: absolute;
-      left: 0;
-      transition: 0.3s;
-    }
+        /* The text content */
+        .direction-aware-hover .content {
+            position: absolute;
+            bottom: 1rem; /* bottom-4 */
+            left: 1rem;   /* left-4 */
+            z-index: 20;
+            color: white;
+            text-align: left;
+            opacity: 0;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
 
-    .navbar-toggler span:nth-child(1) {
-      top: 4px;
-    }
+        .direction-aware-hover .content-title {
+            font-weight: bold;
+            font-size: 1.25rem; /* text-xl */
+        }
+        .direction-aware-hover .content-text {
+            font-size: 0.875rem; /* text-sm */
+        }
 
-    .navbar-toggler span:nth-child(2) {
-      bottom: 4px;
-    }
+        /* --- Hover State Logic --- */
+        .direction-aware-hover:hover .overlay {
+            opacity: 1;
+        }
 
-    /* Animate to X when open */
-    .navbar-toggler.collapsed span:nth-child(1) {
-      transform: rotate(0) translateY(0);
-    }
+        .direction-aware-hover:hover .content {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
 
-    .navbar-toggler.collapsed span:nth-child(2) {
-      transform: rotate(0) translateY(0);
-    }
+        /* --- Directional Animation States --- */
+        
+        /* Coming from TOP */
+        .direction-aware-hover.hover-from-top .content { transform: translateY(-20px); }
+        .direction-aware-hover.hover-from-top:hover .image-container { transform: translateY(20px); }
 
-    .navbar-toggler:not(.collapsed) span:nth-child(1) {
-      transform: rotate(45deg);
-      top: 8px;
-    }
+        /* Coming from BOTTOM */
+        .direction-aware-hover.hover-from-bottom .content { transform: translateY(20px); }
+        .direction-aware-hover.hover-from-bottom:hover .image-container { transform: translateY(-20px); }
 
-    .navbar-toggler:not(.collapsed) span:nth-child(2) {
-      transform: rotate(-45deg);
-      bottom: 8px;
-    }
+        /* Coming from LEFT */
+        .direction-aware-hover.hover-from-left .content { transform: translateX(-20px); }
+        .direction-aware-hover.hover-from-left:hover .image-container { transform: translateX(20px); }
 
-    body {
-      background-color: rgb(237, 237, 237);
-    }
+        /* Coming from RIGHT */
+        .direction-aware-hover.hover-from-right .content { transform: translateX(20px); }
+        .direction-aware-hover.hover-from-right:hover .image-container { transform: translateX(-20px); }
 
-    /* Mega dropdown style */
-    .mega-dropdown {
-      position: absolute;
-      top: 44px;
-      left: 0;
-      width: 100%;
-      background: #1d1d1f;
-      color: #fff;
-      display: none;
-      padding: 2rem;
-    }
+        .store-header {
+  padding: 80px 0 64px;
+  color: #1D1D1F;
+  text-align: center;
+}
 
-    .nav-item:hover .mega-dropdown {
-      display: block;
-    }
+.store-title {
+  font-size: 48px; /* Apple’s Store title is big, not 17px */
+  font-weight: 700;
+  font-family: "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  margin-bottom: 12px;
+}
 
-    .mega-dropdown h6 {
-      font-size: 0.75rem;
-      color: #86868b;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-    }
+.store-subtitle {
+  font-size: 17px;
+  font-weight: 400;
+  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
 
-    .mega-dropdown a {
-      display: block;
-      color: #fff;
-      font-size: 0.9rem;
-      text-decoration: none;
-      margin-bottom: 0.4rem;
-    }
 
-    .mega-dropdown a:hover {
-      color: #2997ff;
-    }
+
+
+
+
+
+
+
+.rf-cards-scroller-platter {
+  display: inline-flex;
+  padding-top: 16px;
+  padding-bottom: 40px;
+  width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+}
+.rf-cards-scroller-platter::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.rf-icon-item {
+  flex: 0 0 auto;
+  width: 80px;
+  margin-right: 24px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.rf-icon-item img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+.rf-label {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #1d1d1f;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Arrows */
+.scroller-btn {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 20;
+}
+.scroller-btn.prev { left: 0; }
+.scroller-btn.next { right: 0; }
+.scroller-btn:hover { background: rgba(0,0,0,0.8); }
+
+/* Fades */
+.scroller-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  pointer-events: none;
+  z-index: 15;
+}
+.scroller-fade.left {
+  left: 0;
+  background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+.scroller-fade.right {
+  right: 0;
+  background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+
+
   </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top apple-navbar">
-  <div class="container-fluid">
-    
-    <!-- Logo -->
-    <a class="navbar-brand" href="#">
-      <i class="bi bi-apple"></i>
-    </a>
+  <div class="container-fluid align-items-center">
 
-    <!-- Nav links (centered) -->
+    <!-- Logo -->
+    <a class="navbar-brand" href="#" aria-label="Apple clone home"><i class="bi bi-apple"></i></a>
+
+    <!-- Centered links (desktop) -->
     <div class="collapse navbar-collapse justify-content-center" id="appleNav">
-      <ul class="navbar-nav mb-2 mb-lg-0">
+      <ul class="navbar-nav mb-0">
         <li class="nav-item"><a class="nav-link" href="#">Store</a></li>
 
         <!-- Mac with Mega Dropdown -->
-        <li class="nav-item position-static">
-          <a class="nav-link" href="#">Mac</a>
-          <div class="mega-dropdown">
+        <li class="nav-item position-static" id="macItem">
+          <a class="nav-link" href="#" role="button">Mac</a>
+          <div class="mega-dropdown" id="macMega">
             <div class="row">
               <div class="col-md-4">
                 <h6>Explore Mac</h6>
@@ -192,26 +325,389 @@
       </ul>
     </div>
 
-    <!-- Icons + Hamburger (right side) -->
+    <!-- Right icons + mobile toggler (opens offcanvas on mobile) -->
     <div class="apple-icons d-flex align-items-center ms-lg-3">
-      <i class="bi bi-search"></i>
-      <i class="bi bi-bag"></i>
+      <i class="bi bi-search" title="Search"></i>
+      <i class="bi bi-bag" title="Bag"></i>
 
-      <!-- Sleek Hamburger -->
-      <button class="navbar-toggler collapsed ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#appleNav" aria-controls="appleNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
+      <!-- Toggler triggers the offcanvas on mobile. On desktop it's decorative (no collapse). -->
+      <button class="custom-toggler ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Open menu">
+        <span></span><span></span>
       </button>
     </div>
   </div>
 </nav>
 
-<!-- Dummy body content -->
-<div style="margin-top:100px; text-align:center;">
-  <h1>Apple Clone Navbar Demo</h1>
-  <p>Now with Mac mega dropdown ✅</p>
+<!-- Offcanvas mobile menu -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="mobileMenuLabel">Menu</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column">
+    <nav class="nav flex-column">
+      <a class="nav-link" href="#">Store</a>
+
+      <!-- Mobile expandable Mac section (accordion style) -->
+      <div class="accordion" id="macAccordion">
+        <div class="accordion-item bg-transparent border-0">
+          <h2 class="accordion-header" id="headingMac">
+            <button class="accordion-button collapsed bg-transparent text-white p-0" type="button" data-bs-toggle="collapse" data-bs-target="#macCollapse" aria-expanded="false" aria-controls="macCollapse">
+              Mac
+            </button>
+          </h2>
+          <div id="macCollapse" class="accordion-collapse collapse" aria-labelledby="headingMac" data-bs-parent="#macAccordion">
+            <div class="accordion-body p-0 mt-2">
+              <a class="nav-link" href="#">Explore All Mac</a>
+              <a class="nav-link" href="#">MacBook Air</a>
+              <a class="nav-link" href="#">MacBook Pro</a>
+              <a class="nav-link" href="#">iMac</a>
+              <a class="nav-link" href="#">Mac mini</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a class="nav-link" href="#">iPad</a>
+      <a class="nav-link" href="#">iPhone</a>
+      <a class="nav-link" href="#">Watch</a>
+      <a class="nav-link" href="#">Vision</a>
+      <a class="nav-link" href="#">AirPods</a>
+      <a class="nav-link" href="#">TV &amp; Home</a>
+      <a class="nav-link" href="#">Entertainment</a>
+      <a class="nav-link" href="#">Accessories</a>
+      <a class="nav-link" href="#">Support</a>
+    </nav>
+  </div>
 </div>
 
+<main style="margin-top:110px; ;">
+  <section class="container py-5">
+    <div class="row align-items-center">
+      <!-- Left: Store Heading -->
+      <div class="col-lg-8 col-12">
+        <h1 class="fw-bold display-4 text-start mb-0">
+          <span class="text-dark">Store.</span>
+          <span class="fw-normal" style="color:#6e6e73;">
+            The best way to buy the products you love.
+          </span>
+        </h1>
+      </div>
+
+      <!-- Right: Support Section -->
+      <div class="col-lg-4 d-none d-lg-flex justify-content-end gap-4">
+        <!-- Item 1 -->
+        <div class="d-flex align-items-center">
+          <img src="https://via.placeholder.com/32" 
+               alt="Specialist" class="rounded-circle me-2">
+          <div class="d-flex flex-column">
+            <small class="fw-semibold text-dark mb-0">Need shopping help?</small>
+            <a href="#" class="text-primary small text-decoration-none">
+              Ask a Specialist →
+            </a>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="d-flex align-items-center">
+          <img src="https://via.placeholder.com/32" 
+               alt="Apple Store" class="me-2">
+          <div class="d-flex flex-column">
+            <small class="fw-semibold text-dark mb-0">Visit an Apple Store</small>
+            <a href="#" class="text-primary small text-decoration-none">
+              Find one near you →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<section class="container my-5 position-relative">
+  <!-- Fade Left -->
+  <div class="scroller-fade left"></div>
+
+  <!-- Prev Button -->
+  <button class="scroller-btn prev d-none d-md-flex">‹</button>
+
+  <!-- Scroller -->
+  <div class="rf-cards-scroller-platter" id="iconScroller">
+    <div class="rf-icon-item">
+      <img src="assets/img/store-card-13-mac-nav-202503.png" alt="Mac">
+      <span class="rf-label">Mac</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/store-card-13-iphone-nav-202509.png" alt="iPhone">
+      <span class="rf-label">iPhone</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="iPad">
+      <span class="rf-label">iPad</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (2).png" alt="Watch">
+      <span class="rf-label">Watch</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="AirPods">
+      <span class="rf-label">AirPods</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (4).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/ECCI_FAV_ICON_3D.png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (1).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (2).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/ECCI_FAV_ICON_3D.png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (6).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (2).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (1).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com.png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (4).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+  </div>
+
+  <!-- Next Button -->
+  <button class="scroller-btn next d-none d-md-flex">›</button>
+
+  <!-- Fade Right -->
+  <div class="scroller-fade right"></div>
+</section>
+
+<section class="container my-5 position-relative">
+  <!-- Fade Left -->
+  <div class="scroller-fade left"></div>
+
+  <!-- Prev Button -->
+  <button class="scroller-btn prev d-none d-md-flex">‹</button>
+
+  <!-- Scroller -->
+  <div class="rf-cards-scroller-platter" id="iconScroller">
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (4).png" alt="Mac">
+      <span class="rf-label">Mac</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (6).png" alt="iPhone">
+      <span class="rf-label">iPhone</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="iPad">
+      <span class="rf-label">iPad</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (2).png" alt="Watch">
+      <span class="rf-label">Watch</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="AirPods">
+      <span class="rf-label">AirPods</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (4).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/ECCI_FAV_ICON_3D.png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (1).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (2).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/ECCI_FAV_ICON_3D.png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (6).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (2).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (1).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com.png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (4).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+    <div class="rf-icon-item">
+      <img src="assets/img/pngwing.com (3).png" alt="Accessories">
+      <span class="rf-label">Accessories</span>
+    </div>
+  </div>
+
+  <!-- Next Button -->
+  <button class="scroller-btn next d-none d-md-flex">›</button>
+
+  <!-- Fade Right -->
+  <div class="scroller-fade right"></div>
+</section>
+
+
+
+
+
+
+</main>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  (function(){
+    // Desktop: stable hover for mega menu using pointer events + small delay to avoid flicker
+    const macItem = document.getElementById('macItem');
+    const macMega = document.getElementById('macMega');
+    let hoverTimeout = null;
+
+    function showMega(){
+      clearTimeout(hoverTimeout);
+      macMega.classList.add('show-mega');
+    }
+    function hideMega(){
+      // small delay to allow moving pointer into the dropdown
+      hoverTimeout = setTimeout(()=> macMega.classList.remove('show-mega'), 120);
+    }
+
+    // Only attach hover handlers on wide screens
+    function attachHover(){
+      if(window.matchMedia('(min-width:992px)').matches){
+        macItem.addEventListener('pointerenter', showMega);
+        macItem.addEventListener('pointerleave', hideMega);
+        // also keep visible when focusing the link (keyboard users)
+        const macLink = macItem.querySelector('.nav-link');
+        macLink.addEventListener('focus', showMega);
+        macLink.addEventListener('blur', hideMega);
+      }
+    }
+
+    function detachHover(){
+      macItem.removeEventListener('pointerenter', showMega);
+      macItem.removeEventListener('pointerleave', hideMega);
+    }
+
+    // initial
+    attachHover();
+
+    // re-evaluate on resize (attach/detach)
+    let resizeTimer=null;
+    window.addEventListener('resize', ()=>{
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(()=>{
+        detachHover();
+        attachHover();
+      }, 120);
+    });
+
+    // Offcanvas toggle animation for the custom toggler (make it turn into X)
+    const offcanvasEl = document.getElementById('mobileMenu');
+    const bsOff = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+    const toggler = document.querySelector('.custom-toggler');
+
+    offcanvasEl.addEventListener('show.bs.offcanvas', ()=> toggler.classList.add('open'));
+    offcanvasEl.addEventListener('hide.bs.offcanvas', ()=> toggler.classList.remove('open'));
+
+    // Accessibility: close offcanvas with Escape handled by bootstrap; ensure focus trap is active by bootstrap
+
+  })();
+
+
+  
+  const scroller = document.getElementById('iconScroller');
+  const prevBtn = document.querySelector('.scroller-btn.prev');
+  const nextBtn = document.querySelector('.scroller-btn.next');
+  const fadeLeft = document.querySelector('.scroller-fade.left');
+  const fadeRight = document.querySelector('.scroller-fade.right');
+
+  const scrollAmount = 200; // pixels per click
+
+  prevBtn.addEventListener('click', () => {
+    scroller.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  });
+
+  nextBtn.addEventListener('click', () => {
+    scroller.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  });
+
+  // Toggle fades based on scroll position
+  function updateFades() {
+    const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth;
+    fadeLeft.style.display = scroller.scrollLeft > 0 ? 'block' : 'none';
+    fadeRight.style.display = scroller.scrollLeft < maxScrollLeft ? 'block' : 'none';
+  }
+
+  scroller.addEventListener('scroll', updateFades);
+  window.addEventListener('resize', updateFades);
+  document.addEventListener('DOMContentLoaded', updateFades);
+
+
+</script>
 </body>
 </html>
