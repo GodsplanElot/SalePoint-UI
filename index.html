@@ -413,6 +413,60 @@
   color: #6e6e73;
 }
 
+/* === FADES === */
+.rf-cards-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+.rf-cards-fade-left {
+  left: 0;
+  background: linear-gradient(to right, rgba(255,255,255,0.95), transparent);
+  opacity: 0;
+}
+.rf-cards-fade-right {
+  right: 0;
+  background: linear-gradient(to left, rgba(255,255,255,0.95), transparent);
+}
+
+/* === ARROWS === */
+.rf-cards-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 3;
+  transition: background 0.3s ease;
+}
+.rf-cards-arrow:hover {
+  background: #fff;
+}
+.rf-cards-arrow-left {
+  left: 16px;
+}
+.rf-cards-arrow-right {
+  right: 16px;
+}
+
+/* Hide arrows on mobile */
+@media (max-width: 768px) {
+  .rf-cards-arrow {
+    display: none;
+  }
+}
+
+
 
   </style>
 </head>
@@ -629,38 +683,176 @@
   <h2 class="rs-cards-shelf-mainheader">The latest.</h2>
   <span class="rs-cards-shelf-secondaryheader">Take a look at what’s new, right now.</span>
 
-  <div class="rf-cards-scroller">
+<div class="rf-cards-scroller">
+  <!-- Left fade -->
+  <div class="rf-cards-fade rf-cards-fade-left"></div>
+  <!-- Right fade -->
+  <div class="rf-cards-fade rf-cards-fade-right"></div>
+
+  <!-- Prev / Next arrows -->
+  <button class="rf-cards-arrow rf-cards-arrow-left">&#10094;</button>
+  <button class="rf-cards-arrow rf-cards-arrow-right">&#10095;</button>
+
   <div class="rf-cards-scroller-crop">
     <div class="rf-cards-scroller-overflow">
       <div class="rf-cards-scroller-platter">
 
-        <!-- Card item -->
+        <!-- Card -->
         <div class="rf-cards-scroller-item">
           <div class="rf-ccard-content rf-ccard-content-withfullimg">
             <div class="rf-ccard-img-full-wrapper">
-              <img class="rf-ccard-img-full" src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-40-iphone-air-202509_FMT_WHH?wid=618&hei=900&fmt=jpeg&qlt=90" alt="iPhone Air">
+              <img class="rf-ccard-img-full" src="https://via.placeholder.com/452x300" alt="Mock Product">
             </div>
             <div class="rf-ccard-content-info">
-              <h3 class="rf-ccard-content-header-eyebrow">PRE-ORDER NOW</h3>
+              <h3 class="rf-ccard-content-header-eyebrow">NEW</h3>
               <div class="rf-ccard-content-header">
-                <a href="#" class="rf-ccard-content-headerlink">iPhone Air</a>
+                <a href="#" class="rf-ccard-content-headerlink">Mock Product</a>
               </div>
               <div class="rf-ccard-content-desc">
-                <span class="typography-body-tight rf-ccard-content-desccontent">The thinnest iPhone ever.</span>
+                <span class="typography-body-tight rf-ccard-content-desccontent">An Apple-style mock card.</span>
                 <span class="typography-body-reduced-tight rf-ccard-content-descprice">
-                  From <b>$999</b> or $41.62/mo. for 24 mo.*
+                  From <b>$999</b>
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- duplicate for more cards... -->
+        <!-- Duplicate this for more cards -->
+                <div class="rf-cards-scroller-item">
+          <div class="rf-ccard-content rf-ccard-content-withfullimg">
+            <div class="rf-ccard-img-full-wrapper">
+              <img class="rf-ccard-img-full" src="https://via.placeholder.com/452x300" alt="Mock Product">
+            </div>
+            <div class="rf-ccard-content-info">
+              <h3 class="rf-ccard-content-header-eyebrow">NEW</h3>
+              <div class="rf-ccard-content-header">
+                <a href="#" class="rf-ccard-content-headerlink">Mock Product</a>
+              </div>
+              <div class="rf-ccard-content-desc">
+                <span class="typography-body-tight rf-ccard-content-desccontent">An Apple-style mock card.</span>
+                <span class="typography-body-reduced-tight rf-ccard-content-descprice">
+                  From <b>$999</b>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Duplicate this for more cards -->
+                <div class="rf-cards-scroller-item">
+          <div class="rf-ccard-content rf-ccard-content-withfullimg">
+            <div class="rf-ccard-img-full-wrapper">
+              <img class="rf-ccard-img-full" src="https://via.placeholder.com/452x300" alt="Mock Product">
+            </div>
+            <div class="rf-ccard-content-info">
+              <h3 class="rf-ccard-content-header-eyebrow">NEW</h3>
+              <div class="rf-ccard-content-header">
+                <a href="#" class="rf-ccard-content-headerlink">Mock Product</a>
+              </div>
+              <div class="rf-ccard-content-desc">
+                <span class="typography-body-tight rf-ccard-content-desccontent">An Apple-style mock card.</span>
+                <span class="typography-body-reduced-tight rf-ccard-content-descprice">
+                  From <b>$999</b>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Duplicate this for more cards -->
+                <div class="rf-cards-scroller-item">
+          <div class="rf-ccard-content rf-ccard-content-withfullimg">
+            <div class="rf-ccard-img-full-wrapper">
+              <img class="rf-ccard-img-full" src="https://via.placeholder.com/452x300" alt="Mock Product">
+            </div>
+            <div class="rf-ccard-content-info">
+              <h3 class="rf-ccard-content-header-eyebrow">NEW</h3>
+              <div class="rf-ccard-content-header">
+                <a href="#" class="rf-ccard-content-headerlink">Mock Product</a>
+              </div>
+              <div class="rf-ccard-content-desc">
+                <span class="typography-body-tight rf-ccard-content-desccontent">An Apple-style mock card.</span>
+                <span class="typography-body-reduced-tight rf-ccard-content-descprice">
+                  From <b>$999</b>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Duplicate this for more cards -->
+                <div class="rf-cards-scroller-item">
+          <div class="rf-ccard-content rf-ccard-content-withfullimg">
+            <div class="rf-ccard-img-full-wrapper">
+              <img class="rf-ccard-img-full" src="https://via.placeholder.com/452x300" alt="Mock Product">
+            </div>
+            <div class="rf-ccard-content-info">
+              <h3 class="rf-ccard-content-header-eyebrow">NEW</h3>
+              <div class="rf-ccard-content-header">
+                <a href="#" class="rf-ccard-content-headerlink">Mock Product</a>
+              </div>
+              <div class="rf-ccard-content-desc">
+                <span class="typography-body-tight rf-ccard-content-desccontent">An Apple-style mock card.</span>
+                <span class="typography-body-reduced-tight rf-ccard-content-descprice">
+                  From <b>$999</b>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Duplicate this for more cards -->
+                <div class="rf-cards-scroller-item">
+          <div class="rf-ccard-content rf-ccard-content-withfullimg">
+            <div class="rf-ccard-img-full-wrapper">
+              <img class="rf-ccard-img-full" src="https://via.placeholder.com/452x300" alt="Mock Product">
+            </div>
+            <div class="rf-ccard-content-info">
+              <h3 class="rf-ccard-content-header-eyebrow">NEW</h3>
+              <div class="rf-ccard-content-header">
+                <a href="#" class="rf-ccard-content-headerlink">Mock Product</a>
+              </div>
+              <div class="rf-ccard-content-desc">
+                <span class="typography-body-tight rf-ccard-content-desccontent">An Apple-style mock card.</span>
+                <span class="typography-body-reduced-tight rf-ccard-content-descprice">
+                  From <b>$999</b>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Duplicate this for more cards -->
+                <div class="rf-cards-scroller-item">
+          <div class="rf-ccard-content rf-ccard-content-withfullimg">
+            <div class="rf-ccard-img-full-wrapper">
+              <img class="rf-ccard-img-full" src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/store-card-40-iphone-air-202509_FMT_WHH?wid=618&hei=900&fmt=jpeg&qlt=90" alt="Mock Product">
+            </div>
+            <div class="rf-ccard-content-info">
+              <h3 class="rf-ccard-content-header-eyebrow">NEW</h3>
+              <div class="rf-ccard-content-header">
+                <a href="#" class="rf-ccard-content-headerlink">Mock Product</a>
+              </div>
+              <div class="rf-ccard-content-desc">
+                <span class="typography-body-tight rf-ccard-content-desccontent">An Apple-style mock card.</span>
+                <span class="typography-body-reduced-tight rf-ccard-content-descprice">
+                  From <b>$999</b>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+        <div class="rf-cards-scroller-item">…</div>
+        <div class="rf-cards-scroller-item">…</div>
 
       </div>
     </div>
   </div>
 </div>
+
 
 
 </section>
@@ -760,6 +952,38 @@
   scroller.addEventListener('scroll', updateFades);
   window.addEventListener('resize', updateFades);
   document.addEventListener('DOMContentLoaded', updateFades);
+
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const scroller = document.querySelector(".rf-cards-scroller-overflow");
+    const fadeLeft = document.querySelector(".rf-cards-fade-left");
+    const fadeRight = document.querySelector(".rf-cards-fade-right");
+    const arrowLeft = document.querySelector(".rf-cards-arrow-left");
+    const arrowRight = document.querySelector(".rf-cards-arrow-right");
+    const cardWidth = document.querySelector(".rf-cards-scroller-item").offsetWidth + 20; // card + margin
+
+    // Scroll function
+    function updateFades() {
+      const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+      fadeLeft.style.opacity = scroller.scrollLeft > 0 ? 1 : 0;
+      fadeRight.style.opacity = scroller.scrollLeft < maxScroll - 1 ? 1 : 0;
+    }
+
+    arrowLeft.addEventListener("click", () => {
+      scroller.scrollBy({ left: -cardWidth, behavior: "smooth" });
+    });
+    arrowRight.addEventListener("click", () => {
+      scroller.scrollBy({ left: cardWidth, behavior: "smooth" });
+    });
+
+    scroller.addEventListener("scroll", updateFades);
+    window.addEventListener("resize", updateFades);
+
+    // Init
+    updateFades();
+  });
+
 
 
 </script>
