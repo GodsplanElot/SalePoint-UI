@@ -266,6 +266,30 @@
 
 
 
+
+
+
+/* Scrollable Cards */
+.rs-cards-shelf-mainheader,
+.rs-cards-shelf-secondaryheader {
+  display: inline;
+  font-family: SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: .007em;
+  line-height: 1.1428571429;
+}
+
+.rs-cards-shelf-mainheader {
+  color: #1d1d1f; /* Pure black for main heading */
+  margin-right: 8px;
+}
+
+.rs-cards-shelf-secondaryheader {
+  color: #6e6e73; /* Gray Apple uses */
+  font-weight: 400; /* lighter than main heading */
+}
+
   </style>
 </head>
 <body>
@@ -475,6 +499,13 @@
   <!-- Fade Right -->
   <div class="scroller-fade right"></div>
 </section>
+
+<!--Scrollable cards-->
+<section class="container my-5">
+  <h2 class="rs-cards-shelf-mainheader">The latest.</h2>
+  <span class="rs-cards-shelf-secondaryheader">Take a look at what’s new, right now.</span>
+</section>
+
 
 
 
